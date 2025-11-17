@@ -42,7 +42,7 @@
 Below you can expand each Nix file to view its full contents.
 
 <details>
-<summary><span style="font-size:1.1em"><code>flake.nix</code> – Flake entrypoint</span></summary>
+<summary><code>flake.nix</code> – Flake entrypoint</summary>
 
 ```nix
 {
@@ -85,7 +85,7 @@ Below you can expand each Nix file to view its full contents.
 </details>
 
 <details>
-<summary><span style="font-size:1.1em"><code>configuration.nix</code> – System configuration</span></summary>
+<summary><code>configuration.nix</code> – System configuration</summary>
 
 ```nix
 { config, lib, pkgs, ... }:
@@ -174,7 +174,7 @@ Below you can expand each Nix file to view its full contents.
 </details>
 
 <details>
-<summary><span style="font-size:1.1em"><code>home.nix</code> – Home Manager configuration</span></summary>
+<summary><code>home.nix</code> – Home Manager configuration</summary>
 
 ```nix
 { config, pkgs, inputs, ... }:
@@ -248,7 +248,7 @@ Below you can expand each Nix file to view its full contents.
 </details>
 
 <details>
-<summary><span style="font-size:1.1em"><code>config/packages.nix</code> – Install Apps</span></summary>
+<summary><code>config/packages.nix</code> – Install Apps</summary>
 ```nix
 
 { pkgs, ... }:
@@ -327,7 +327,7 @@ environment.systemPackages = with pkgs; [
 
 
 <details>
-<summary><span style="font-size:1.1em"><code>config/fonts.nix</code> – Install Fonts</span></summary>
+<summary><code>config/fonts.nix</code> – Install Fonts</summary>
 
 ```nix
 
