@@ -60,7 +60,6 @@
     tmux #Terminal mux with hybridd ddubs-tonybtw config
     ugrep
     wget
-    yazi
     zig
   ];
 

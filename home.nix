@@ -6,6 +6,7 @@
     ./config/noctalia.nix # Noctalia QuickShell wiring (fronm ddubsos)
     ./config/vscode.nix
     ./config/zsh.nix
+    ./config/yazi/default.nix
   ];
   home = {
     username = "dwilliams";
