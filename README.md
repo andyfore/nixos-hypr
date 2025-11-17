@@ -322,12 +322,12 @@ environment.systemPackages = with pkgs; [
 }
 
 ````
+
 </details>
 
 
 
 <details>
-
 <summary><span style="font-size:1.1em"><code>config/fonts.nix</code> – Install Fonts</span></summary>
 ```nix
 
@@ -365,7 +365,7 @@ environment.systemPackages = with pkgs; [
 
 }
 
-```
+````
 
 </details>
 
@@ -405,4 +405,7 @@ Default keybinds from <code>config/hypr/hyprland.conf</code> (with <code>$mainMo
 | SUPER + mouse scroll up        | workspace e-1                              | Go to previous workspace                                 |
 | SUPER + mouse:272 (drag left)  | movewindow                                 | Drag to move window                                      |
 | SUPER + mouse:273 (drag right) | resizewindow                               | Drag to resize window                                    |
-````
+
+```
+
+```
