@@ -61,12 +61,38 @@
       enable = true;
       enableSSHSupport = true;
     };
+    zoxide = {
+      enable = true;
+      enableZshIntegration = true;
+      enableBashIntegration = true;
+      enableFishIntegration = true;
+      options = [
+        "--cmd cd"
+      ];
+    };
+    eza = {
+      enable = true;
+      icons = "auto";
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+      enableFishIntegration = true;
+      git = true;
+
+      extraOptions = [
+        "--group-directories-first"
+        "--no-quotes"
+        "--header" # Show header row
+        "--git-ignore"
+        # "--time-style=long-iso" # ISO 8601 extended format for time
+        "--classify" # append indicator (/, *, =, @, |)
+        "--hyperlink" # make paths clickable in some terminals
+      ];
+    };
+
   };
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-
-
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.dwilliams = {
@@ -88,7 +114,6 @@
     libnotify # send alerts
     xdg-desktop-portal-hyprland
 
-
     # Hyprland Related 
     app2unit # launcher 
     clipman
@@ -102,14 +127,13 @@
     waybar
     matugen
 
-
+    # Add your packages here
     atop
     bat
     btop
     bottom
     clang
     curl
-    eza
     fastfetch
     foot
     git
@@ -135,7 +159,6 @@
     wget
     yazi
     zig
-    zoxide
   ];
   fonts = {
     packages = with pkgs; [
