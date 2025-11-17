@@ -26,7 +26,8 @@
 
   # Add services 
   services = {
-    getty.autologinUser = "dwilliams";
+    # Disable TTY autologin; use a display manager (ly) instead.
+    getty.autologinUser = null;
     openssh.enable = true;
     tumbler.enable = true;
     envfs.enable = true;
@@ -34,6 +35,12 @@
     pipewire = {
       enable = true;
       pulse.enable = true;
+    };
+    displayManager.ly = {
+      enable = true;
+      settings = {
+        animation = "matrix";
+      };
     };
   };
 
