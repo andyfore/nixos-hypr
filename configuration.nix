@@ -26,6 +26,13 @@
 
   time.timeZone = "America/New_York";
 
+  # GPU/VM profile for this single-host system
+  # Current host: VM with virtio GPU (no dedicated AMD/Intel/NVIDIA module enabled).
+  # If you later move this config to bare metal, enable exactly ONE of the drivers.* options:
+  #   drivers.amdgpu.enable = true;  # AMD GPUs
+  #   drivers.intel.enable  = true;  # Intel iGPU
+  #   drivers.nvidia.enable = true;  # NVIDIA GPUs
+
   # Enable VM guest services via the drivers module when running in a VM.
   # Disable this if you are installing on bare metal without QEMU/Spice.
   vm.guest-services.enable = true;
