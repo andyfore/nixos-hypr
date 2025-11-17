@@ -20,9 +20,9 @@
     # The block below is for commands that should run every time a terminal starts.
     initExtra = ''
       # Source the personal file for all interactive shell sessions
-      if [ -f ~/.bashrc-personal ]; then
-        source ~/.bashrc-personal
-      fi
+#      if [ -f ~/.bashrc-personal ]; then
+ #       source ~/.bashrc-personal
+  #    fi
     '';
     profileExtra = ''
       if [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" = 1 ]; then
@@ -31,9 +31,9 @@
     '';
   };
  };
-    home.file.".config/hypr/hyprland.conf".source = ./config/hypr/hyprland.conf;
-    home.file.".config/hypr/hyprpaper.conf".source = ./config/hypr/hyprpaper.conf;
+    home.file.".config/hypr".source = ./config/hypr;
     home.file.".config/waybar".source = ./config/waybar;
-    home.file.".config/foot/foot.ini".source = ./config/foot/foot.ini;
+    home.file.".config/foot".source = ./config/foot;
     home.file.".bashrc-personal".source = ./config/.bashrc-personal;
+    home.file.".config/starship.toml".source = ./config/starship.toml;
 }

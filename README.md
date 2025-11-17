@@ -107,32 +107,48 @@ https://www.youtube.com/watch?v=7QLhCgDMqgw&t=138s
       ./hardware-configuration.nix
     ];
 
-    bootloader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+  };
 
-  networking.hostName = "hyprland-btw"; 
-  networking.networkmanager.enable = true;
+  networking = { 
+    hostName = "hyprland-btw"; 
+    networkmanager.enable = true;
+  };
 
    time.timeZone = "America/New_York";
 
-   services.getty.autologinUser = "dwilliams";
+   # Add services 
+   services = {
+     getty.autologinUser = "dwilliams";
+     openssh.enable = true;
+     libinput.enable = true;
+     pipewire = {
+       enable = true;
+       pulse.enable = true;
+     };
+   };
 
-   programs.hyprland = { 
+   programs = {
+     hyprland = { 
       enable = true; 
       xwayland.enable = true; 
       withUWSM = true;
+     };
+    firefox.enable = true;
+    thunar.enable = true;
+    mtr.enable = true;
+    gnupg.agent = {
+     enable = true;
+     enableSSHSupport = true;
     };
+   };
 
   # Select internationalisation properties.
    i18n.defaultLocale = "en_US.UTF-8";
 
-   services.pipewire = {
-     enable = true;
-     pulse.enable = true;
-   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
    users.users.dwilliams = {
@@ -140,16 +156,9 @@ https://www.youtube.com/watch?v=7QLhCgDMqgw&t=138s
      extraGroups = [ "wheel" "input" ]; # Enable ‘sudo’ for the user.
      packages = with pkgs; [
        tree
-       hyfetch
      ];
    };
 
-  programs = {
-    firefox.enable = true;
-    thunar.enable = true;
-    };
-
-   ## Add you packages below 
    environment.systemPackages = with pkgs; [
 
     ## Hyprland specific 
@@ -189,10 +198,12 @@ https://www.youtube.com/watch?v=7QLhCgDMqgw&t=138s
      git
      gping
      google-chrome
+     hyfetch
      kitty
      lunarvim
      luarocks
      ncdu 
+     nh
      onefetch
      pciutils
      ripgrep
@@ -205,8 +216,6 @@ https://www.youtube.com/watch?v=7QLhCgDMqgw&t=138s
      zig
      zoxide
    ];
-
-    ## Nerd fonts and more 
         fonts = {
             packages = with pkgs; [
               dejavu_fonts
@@ -239,22 +248,7 @@ https://www.youtube.com/watch?v=7QLhCgDMqgw&t=138s
    nixpkgs.config.allowUnfree = true;
    nix.settings.experimental-features = [ "nix-command" "flakes" ];
    security.sudo.wheelNeedsPassword = true;
-
-   programs.mtr.enable = true;
-   programs.gnupg.agent = {
-     enable = true;
-     enableSSHSupport = true;
-   };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-   services = {
-       openssh.enable = true;
-    };
-
-
-  system.stateVersion = "25.11"; # Did you read the comment?
+   system.stateVersion = "25.11"; # Did you read the comment?
 
 }
 
