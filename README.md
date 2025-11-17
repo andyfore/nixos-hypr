@@ -249,7 +249,7 @@ Below you can expand each Nix file to view its full contents.
 
 <details>
 <summary><code>config/packages.nix</code> – Install Apps</summary>
-```nix
+````nix
 
 { pkgs, ... }:
 
@@ -319,13 +319,13 @@ environment.systemPackages = with pkgs; [
 
 }
 
-```
+````
 </details>
 
 <details>
 <summary><code>config/fonts.nix</code> – Install Fonts</summary>
 
-```nix
+````nix
 { pkgs, ... }:
 
 {
