@@ -1,12 +1,13 @@
 { config, pkgs, ... }:
 
 {
-  home.username = "dwilliams";
-  home.homeDirectory = "/home/dwilliams";
-  home.stateVersion = "25.11";
-
-  home.sessionVariables = {
-    GTK_THEME = "Adwaita:dark";
+  home = { 
+    username = "dwilliams";
+    homeDirectory = "/home/dwilliams";
+    stateVersion = "25.11";
+    sessionVariables = {
+      GTK_THEME = "Adwaita:dark";
+     };
   };
 
   programs = {
