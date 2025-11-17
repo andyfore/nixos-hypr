@@ -188,8 +188,8 @@ sed -i "s|console.keyMap = \".*\";|console.keyMap = \"$consoleKeyMap\";|" ./conf
 sed -i "s|xserver.xkb.layout = \".*\";|xserver.xkb.layout = \"$keyboardLayout\";|" ./configuration.nix
 
 # Update flake.nix and home.nix to avoid hardcoded username.
-sed -i "s/users.dwilliams = import .\/home.nix;/users.$userName = import .\/home.nix;/" ./flake.nix
-sed -i "s/home.username = \"dwilliams\";/home.username = \"$userName\";/" ./home.nix
+sed -i "s|users.dwilliams = import ./home.nix;|users.$userName = import ./home.nix;|" ./flake.nix
+sed -i "s|home.username = \"dwilliams\";|home.username = \"$userName\";|" ./home.nix
 sed -i "s|home.homeDirectory = \"/home/dwilliams\";|home.homeDirectory = \"/home/$userName\";|" ./home.nix
 
 print_header "Hardware Configuration"
