@@ -4,6 +4,7 @@
   imports = [
     ./config/nixvim.nix # your Nixvim HM module
     ./config/noctalia.nix # Noctalia QuickShell wiring (like ddubsos)
+    ./zsh.nix
   ];
   home = {
     username = "dwilliams";
@@ -89,6 +90,7 @@
   home.file.".config/kitty".source = ./config/kitty;
   home.file.".config/foot".source = ./config/foot;
   home.file.".bashrc-personal".source = ./config/.bashrc-personal;
+  home.file.".zshrc-personal".source = ./config/.zshrc-personal;
   home.file.".config/tmux/tmux.conf".source = ./config/tmux.conf;
   home.file.".config/starship.toml".source = ./config/starship.toml;
 }

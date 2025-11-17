@@ -71,6 +71,7 @@
   users.users.dwilliams = {
     isNormalUser = true;
     extraGroups = [ "wheel" "input" ]; # Enable ‘sudo’ for the user.
+    shell = pkgs.zsh; # default login shell
     packages = with pkgs; [
       tree
     ];
