@@ -328,6 +328,7 @@ environment.systemPackages = with pkgs; [
 
 <details>
 <summary><span style="font-size:1.1em"><code>config/fonts.nix</code> – Install Fonts</span></summary>
+
 ```nix
 
 { pkgs, ... }:
