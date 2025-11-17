@@ -36,12 +36,10 @@
   gtk = {
     enable = true;
 
-    # Force a dark GTK theme (matches what nwg-look is using, but dark variant)
-    theme = {
-      name = "adw-gtk3-dark";
+    home.sessionVariables = {
+      GTK_THEME = "adw-gtk3-dark";
     };
 
-    # Optional: keep these so apps that honor the hint still prefer dark
     gtk3.extraConfig = {
       "gtk-application-prefer-dark-theme" = 1;
     };
@@ -51,6 +49,7 @@
     };
   };
 
+  # Config apps
   home.file.".config/hypr".source = ./config/hypr;
   home.file.".config/waybar".source = ./config/waybar;
   home.file.".config/fastfetch".source = ./config/fastfetch;
