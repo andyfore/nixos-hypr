@@ -1,22 +1,22 @@
-##  Project: 
+## Project:
 
 ## Super Simple NixOS config for Hyprland with USWM
 
-## This configuration was taken directly from `tony,btw` YouTube video 
+## This configuration was taken directly from `tony,btw` YouTube video
 
 https://www.youtube.com/watch?v=7QLhCgDMqgw&t=138s
 
+### Hyprland:
 
-### Hyprland: 
-- Autoloin 
-- Simple flake 
-- Simple Home Manager 
+- Autoloin
+- Simple flake
+- Simple Home Manager
 - Simple waybar
 
+### `Flake.nix`
 
-###  `Flake.nix`
 ```nix
-
+}
 {
   description = "Hyprland on Nixos";
 
@@ -48,7 +48,8 @@ https://www.youtube.com/watch?v=7QLhCgDMqgw&t=138s
 }
 ```
 
-###  `home.nix`
+### `home.nix`
+
 ```nix
 
 { config, pkgs, ... }:
@@ -57,39 +58,62 @@ https://www.youtube.com/watch?v=7QLhCgDMqgw&t=138s
   home.username = "dwilliams";
   home.homeDirectory = "/home/dwilliams";
   home.stateVersion = "25.11";
-  programs = {
-     neovim = {
-        enable = true;
-        defaultEditor = true;
-        };
-     bash = {
-       enable = true;
-       shellAliases = {
-         ll = "eza -la --group-dirs-first --icons";
-         v = "nvim";
-         rebuild = "sudo nixos-rebuild switch --flake ~/tony-nixos/";
-         update  = "nix flake update --flake ~/tony-nixos && sudo nixos-rebuild switch --flake ~/tony-nixos/";
-    };
-    # The block below is for commands that should run every time a terminal starts.
-    initExtra = ''
-      # Source the personal file for all interactive shell sessions
-      if [ -f ~/.bashrc-personal ]; then
-       source ~/.bashrc-personal
-      fi
-    '';
-    profileExtra = ''
-      if [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" = 1 ]; then
-        exec Hyprland
-      fi
-    '';
+
+  home.sessionVariables = {
+    GTK_THEME = "Adwaita:dark";
   };
- };
-    home.file.".config/hypr".source = ./config/hypr;
-    home.file.".config/waybar".source = ./config/waybar;
-    home.file.".config/foot".source = ./config/foot;
-    home.file.".bashrc-personal".source = ./config/.bashrc-personal;
-    home.file.".config/starship.toml".source = ./config/starship.toml;
-}
+
+  programs = {
+    neovim = {
+      enable = true;
+      defaultEditor = true;
+    };
+    bash = {
+      enable = true;
+      shellAliases = {
+        ll = "eza -la --group-dirs-first --icons";
+        v = "nvim";
+        rebuild = "sudo nixos-rebuild switch --flake ~/tony-nixos/";
+        update = "nix flake update --flake ~/tony-nixos && sudo nixos-rebuild switch --flake ~/tony-nixos/";
+      };
+      # The block below is for commands that should run every time a terminal starts.
+      initExtra = ''
+        # Source the personal file for all interactive shell sessions
+        if [ -f ~/.bashrc-personal ]; then
+         source ~/.bashrc-personal
+        fi
+      '';
+      profileExtra = ''
+        if [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" = 1 ]; then
+          #exec uwsm start -S hyprland-uwsm.desktop   #uwsm stopped working for me after nix update
+          export GTK_THEME=Adwaita:dark   # Setting this here and in `hyprland.conf`
+          exec Hyprland
+        fi
+      '';
+    };
+  };
+
+  # Had to set theme in `hyprland.conf` also or everything was light
+  gtk = {
+    enable = true;
+    gtk3.extraConfig = {
+      "gtk-application-prefer-dark-theme" = 1;
+    };
+    gtk4.extraConfig = {
+      "gtk-application-prefer-dark-theme" = 1;
+    };
+  };
+
+  # Config apps
+  home.file.".config/hypr".source = ./config/hypr;
+  home.file.".config/waybar".source = ./config/waybar;
+  home.file.".config/fastfetch".source = ./config/fastfetch;
+  home.file.".config/kitty".source = ./config/kitty;
+  home.file.".config/foot".source = ./config/foot;
+  home.file.".bashrc-personal".source = ./config/.bashrc-personal;
+  home.file.".config/tmux/tmux.conf".source = ./config/tmux.conf;
+  home.file.".config/starship.toml".source = ./config/starship.toml;
+ }
 ```
 
 ```nix
@@ -98,7 +122,7 @@ https://www.youtube.com/watch?v=7QLhCgDMqgw&t=138s
 
 {
   imports =
-    [ 
+    [
       ./hardware-configuration.nix
     ];
 
@@ -107,14 +131,14 @@ https://www.youtube.com/watch?v=7QLhCgDMqgw&t=138s
     loader.efi.canTouchEfiVariables = true;
   };
 
-  networking = { 
-    hostName = "hyprland-btw"; 
+  networking = {
+    hostName = "hyprland-btw";
     networkmanager.enable = true;
   };
 
    time.timeZone = "America/New_York";
 
-   # Add services 
+   # Add services
    services = {
      getty.autologinUser = "dwilliams";
      openssh.enable = true;
@@ -126,9 +150,9 @@ https://www.youtube.com/watch?v=7QLhCgDMqgw&t=138s
    };
 
    programs = {
-     hyprland = { 
-      enable = true; 
-      xwayland.enable = true; 
+     hyprland = {
+      enable = true;
+      xwayland.enable = true;
       withUWSM = false;    # Stopped woirkoing after update
      };
     firefox.enable = true;
@@ -143,8 +167,6 @@ https://www.youtube.com/watch?v=7QLhCgDMqgw&t=138s
   # Select internationalisation properties.
    i18n.defaultLocale = "en_US.UTF-8";
 
-
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
    users.users.dwilliams = {
      isNormalUser = true;
@@ -156,16 +178,16 @@ https://www.youtube.com/watch?v=7QLhCgDMqgw&t=138s
 
    environment.systemPackages = with pkgs; [
 
-    ## Hyprland specific 
+    ## Hyprland specific
      hyprpaper
      hyprshot
      hypridle
      hyprlock
      hyprpicker
      xdg-desktop-portal-hyprland
-     
-     
-     # Hyprland Related 
+
+
+     # Hyprland Related
      clipman
      grim
      slurp
@@ -175,14 +197,14 @@ https://www.youtube.com/watch?v=7QLhCgDMqgw&t=138s
      nwg-panel
      nwg-launchers
      rofi
-     wofi 
+     wofi
      waybar
      waypaper
 
 
      atop
-     bat 
-     btop 
+     bat
+     btop
      clang
      curl
      eza
@@ -197,7 +219,7 @@ https://www.youtube.com/watch?v=7QLhCgDMqgw&t=138s
      kitty
      lunarvim
      luarocks
-     ncdu 
+     ncdu
      nh
      onefetch
      pciutils
