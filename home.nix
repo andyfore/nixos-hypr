@@ -2,10 +2,10 @@
 
 {
   imports = [
-    ./config/nixvim.nix # your Nixvim HM module
-    ./config/noctalia.nix # Noctalia QuickShell wiring (like ddubsos)
+    ./config/nixvim.nix # Nixvim HM module
+    ./config/noctalia.nix # Noctalia QuickShell wiring (fronm ddubsos)
     ./config/vscode.nix
-    ./zsh.nix
+    ./config/zsh.nix
   ];
   home = {
     username = "dwilliams";
@@ -45,6 +45,7 @@
       '';
     };
 
+    #  Enables seemless zoxide integration
     zoxide = {
       enable = true;
       enableZshIntegration = true;
@@ -74,6 +75,7 @@
     };
   };
 
+  #  Help consistently theme appps 
   gtk = {
     enable = true;
     gtk3.extraConfig = {

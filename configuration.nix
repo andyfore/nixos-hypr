@@ -4,8 +4,8 @@
   imports =
     [
       ./hardware-configuration.nix
-      ./fonts.nix
-      ./packages.nix
+      ./config/fonts.nix
+      ./config/packages.nix
     ];
 
   boot = {
