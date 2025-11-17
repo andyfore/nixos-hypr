@@ -326,15 +326,12 @@ environment.systemPackages = with pkgs; [
 
 
 
-<details>
-<summary><code>config/fonts.nix</code> – Install Fonts</summary>
+### `config/fonts.nix` – Install Fonts
 
 ```nix
-
 { pkgs, ... }:
 
 {
-
   fonts = {
     packages = with pkgs; [
       dejavu_fonts
@@ -362,12 +359,8 @@ environment.systemPackages = with pkgs; [
       terminus_font
     ];
   };
-
 }
-
 ```
-
-</details>
 
 ## Hyprland keybinds
 
