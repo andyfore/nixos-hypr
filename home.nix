@@ -88,6 +88,12 @@
   };
 
   # Config apps
+  # Wallpapers: copy repo wallpapers to ~/Pictures/Wallpapers (Noctalia's default)
+  home.file."Pictures/Wallpapers" = {
+    source = ./config/wallpapers;
+    recursive = true;
+  };
+
   home.file.".config/hypr".source = ./config/hypr;
   home.file.".config/waybar".source = ./config/waybar;
   home.file.".config/fastfetch".source = ./config/fastfetch;
