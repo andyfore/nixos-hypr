@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, lib, ... }:
 
 {
   imports = [
@@ -9,8 +9,8 @@
     ./config/yazi/default.nix
   ];
   home = {
-    username = "your-username";
-    homeDirectory = "/home/your-username";
+    username = lib.mkDefault "your-username";
+    homeDirectory = lib.mkDefault "/home/your-username";
     stateVersion = "25.11";
     sessionVariables = {
       GTK_THEME = "Adwaita:dark";

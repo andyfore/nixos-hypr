@@ -289,8 +289,8 @@ esac
 
 # Update flake.nix and home.nix to avoid hardcoded username.
 sed -i "s|users.\"your-username\" = import ./home.nix;|users.\"$userName\" = import ./home.nix;|" ./flake.nix
-sed -i "s|home.username = \"your-username\";|home.username = \"$userName\";|" ./home.nix
-sed -i "s|home.homeDirectory = \"/home/your-username\";|home.homeDirectory = \"/home/$userName\";|" ./home.nix
+sed -i "s|home.username = lib.mkDefault \"your-username\";|home.username = lib.mkDefault \"$userName\";|" ./home.nix
+sed -i "s|home.homeDirectory = lib.mkDefault \"/home/your-username\";|home.homeDirectory = lib.mkDefault \"/home/$userName\";|" ./home.nix
 
 print_header "Hardware Configuration"
 

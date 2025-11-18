@@ -241,8 +241,8 @@ Below you can expand each Nix file to view its full contents.
     ./config/noctalia.nix # Noctalia QuickShell wiring (like ddubsos)
   ];
   home = {
-    username = "your-username";
-    homeDirectory = "/home/your-username";
+    username = lib.mkDefault "your-username";
+    homeDirectory = lib.mkDefault "/home/your-username";
     stateVersion = "25.11";
     sessionVariables = {
       GTK_THEME = "Adwaita:dark";
