@@ -87,13 +87,22 @@
     };
   };
 
-  # Config apps
-  # Wallpapers: copy repo wallpapers to ~/Pictures/Wallpapers (Noctalia's default)
-  home.file."Pictures/Wallpapers" = {
-    source = ./config/wallpapers;
-    recursive = true;
-  };
+  # Seed wallpapers once into ~/Pictures/Wallpapers (Noctalia default), without overwriting user changes
+  home.activation.seedWallpapers = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    set -eu
+    SRC=${./config/wallpapers}
+    DEST="$HOME/Pictures/Wallpapers"
+    mkdir -p "$DEST"
+    # Copy each file only if it doesn't already exist
+    find "$SRC" -maxdepth 1 -type f -print0 | while IFS= read -r -d '' f; do
+      bn="$(basename "$f")"
+      if [ ! -e "$DEST/$bn" ]; then
+        cp "$f" "$DEST/$bn"
+      fi
+    done
+  '';
 
+  # Config apps
   home.file.".config/hypr".source = ./config/hypr;
   home.file.".config/waybar".source = ./config/waybar;
   home.file.".config/fastfetch".source = ./config/fastfetch;
