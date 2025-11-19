@@ -250,8 +250,8 @@ echo -e "${GREEN}Selected GPU profile: $GPU_PROFILE${NC}"
 # Patch configuration.nix with chosen timezone, hostname, username, layouts, and VM profile.
 sed -i "s|time.timeZone = \".*\";|time.timeZone = \"$timeZone\";|" ./configuration.nix
 sed -i "s|networking.hostName = \".*\";|networking.hostName = \"$hostName\";|" ./configuration.nix
-# Update the primary user attribute from users.users."your-username" to the chosen username.
-sed -i "s|users.users.\"your-username\" = {|users.users.\"$userName\" = { |" ./configuration.nix
+# Update the primary user attribute in configuration.nix to the chosen username (match any current value).
+sed -i -E 's|users\.users\."[^"]+"\s*=\s*\{|users.users."'"$userName"'" = {|' ./configuration.nix
 # Update console keymap and XKB layout.
 sed -i "s|console.keyMap = \".*\";|console.keyMap = \"$consoleKeyMap\";|" ./configuration.nix
 sed -i "s|xserver.xkb.layout = \".*\";|xserver.xkb.layout = \"$keyboardLayout\";|" ./configuration.nix
@@ -288,9 +288,9 @@ case "$GPU_PROFILE" in
 esac
 
 # Update flake.nix and home.nix to avoid hardcoded username.
-sed -i "s|users.\"your-username\" = import ./home.nix;|users.\"$userName\" = import ./home.nix;|" ./flake.nix
-sed -i "s|home.username = lib.mkDefault \"your-username\";|home.username = lib.mkDefault \"$userName\";|" ./home.nix
-sed -i "s|home.homeDirectory = lib.mkDefault \"/home/your-username\";|home.homeDirectory = lib.mkDefault \"/home/$userName\";|" ./home.nix
+sed -i -E 's|users\."[^"]+"\s*=\s*import \./home\.nix;|users."'"$userName"'" = import ./home.nix;|' ./flake.nix
+sed -i -E 's|home\.username = lib\.mkDefault ".*";|home.username = lib.mkDefault '"\"$userName\""';|' ./home.nix
+sed -i -E 's|home\.homeDirectory = lib\.mkDefault "/home/.*";|home.homeDirectory = lib.mkDefault '"\"/home/$userName\""';|' ./home.nix
 
 print_header "Hardware Configuration"
 
