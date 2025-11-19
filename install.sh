@@ -346,6 +346,33 @@ echo -e "${GREEN}Selected keyboard layout: $keyboardLayout${NC}"
 echo -e "${GREEN}Selected console keymap: $consoleKeyMap${NC}"
 echo -e "${GREEN}Selected GPU profile: $GPU_PROFILE${NC}"
 
+# Detect existing human users (UID >= 1000) to preserve; exclude the chosen primary user.
+PRESERVE_USERS=()
+while IFS=: read -r _name _pw _uid _gid _gecos _home _shell; do
+  # skip non-numeric or malformed UID entries just in case
+  if [[ "${_uid}" =~ ^[0-9]+$ ]] && [ "${_uid}" -ge 1000 ]; then
+    # ignore disabled shells
+    if [[ "${_shell}" != */nologin && "${_shell}" != */false ]]; then
+      if [[ "${_name}" != "${userName}" ]]; then
+        PRESERVE_USERS+=("${_name}")
+      fi
+    fi
+  fi
+done < <(getent passwd || cat /etc/passwd)
+
+if [ ${#PRESERVE_USERS[@]} -gt 0 ]; then
+  echo -e "${YELLOW}Preserving existing users (will not be removed on switch): ${PRESERVE_USERS[*]}${NC}"
+  # Ensure we do not delete undeclared users: enable mutable users policy.
+  if grep -qE '\busers\.mutableUsers\b' ./configuration.nix; then
+    sed -i 's|users\.mutableUsers = .*;|users.mutableUsers = true;|' ./configuration.nix
+  else
+    # Insert after nix.settings.experimental-features for a stable anchor
+    sed -i '/nix\.settings\.experimental-features/a\  users.mutableUsers = true;' ./configuration.nix
+  fi
+else
+  echo -e "${GREEN}No additional existing human users detected to preserve.${NC}"
+fi
+
 # Patch configuration.nix with chosen timezone, hostname, username, layouts, and VM profile.
 sed -i -E 's|(^\s*time\.timeZone\s*=\s*\").*(\";)|\1'"$timeZone"'\2|' ./configuration.nix
 # configuration.nix defines hostName inside the networking attrset (not networking.hostName = ...)
