@@ -66,6 +66,46 @@ prompt_yes_no() {
   done
 }
 
+is_valid_username() {
+  # POSIX-ish: start with [a-z_], then [a-z0-9_-]; limit to 32 chars
+  local u="$1"
+  [[ "$u" =~ ^[a-z_][a-z0-9_-]{0,31}$ ]]
+}
+
+ensure_username() {
+  # Reads/validates $userName (already populated) and enforces existence or explicit consent
+  while true; do
+    if [ -z "$userName" ]; then
+      userName="$defaultUserName"
+    fi
+    if ! is_valid_username "$userName"; then
+      echo -e "${RED}Invalid username '$userName'. Use lowercase letters, digits, '_' or '-', starting with a letter or '_' (max 32).${NC}"
+      if [ $NONINTERACTIVE -eq 1 ]; then
+        exit 1
+      fi
+      printf "Enter primary username for this system [%s]: " "$defaultUserName"
+      IFS= read -r userName
+      continue
+    fi
+    if id -u "$userName" >/dev/null 2>&1 || getent passwd "$userName" >/dev/null 2>&1; then
+      echo -e "${GREEN}User '$userName' exists on this system.${NC}"
+      break
+    fi
+    echo -e "${YELLOW}User '$userName' does not currently exist on this system.${NC}"
+    echo -e "${YELLOW}It will be created during nixos-rebuild (users.users.\"$userName\" is defined).${NC}"
+    if [ $NONINTERACTIVE -eq 1 ]; then
+      echo -e "Non-interactive: proceeding with automatic creation."
+      break
+    fi
+    if prompt_yes_no "Proceed with creating '$userName' on switch?" N; then
+      break
+    fi
+    # Reprompt for a different username
+    printf "Enter a different username [%s]: " "$defaultUserName"
+    IFS= read -r userName
+  done
+}
+
 print_failure_banner() {
   echo -e "${RED}╔═══════════════════════════════════════════════════════════════════════╗${NC}"
   echo -e "${RED}║         hyprland-btw installation failed during nixos-rebuild.        ║${NC}"
@@ -236,9 +276,7 @@ else
 
   echo ""
   read -rp "Enter primary username for this system [${defaultUserName}]: " userName
-  if [ -z "$userName" ]; then
-    userName="$defaultUserName"
-  fi
+  ensure_username
 
   echo ""
   echo -e "Common keyboard layouts:"
@@ -272,24 +310,8 @@ fi
 
 print_header "User and Root Password Checks"
 
-# 1) Validate whether the entered username exists locally; if not, inform the user
-#    that NixOS will create it on switch since configuration.nix defines it.
-if getent passwd "$userName" >/dev/null 2>&1; then
-  echo -e "${GREEN}User '$userName' exists on this system.${NC}"
-else
-  echo -e "${YELLOW}User '$userName' does not currently exist on this system.${NC}"
-  echo -e "${YELLOW}It will be created during nixos-rebuild because users.users.\"$userName\" is defined.${NC}"
-  if [ $NONINTERACTIVE -eq 1 ]; then
-    echo -e "Non-interactive: proceeding with automatic creation."
-  else
-    if prompt_yes_no "Proceed with creating '$userName' on switch?" N; then
-      :
-    else
-      print_error "Aborting at user confirmation."
-      exit 1
-    fi
-  fi
-fi
+# Username was validated and confirmed earlier in ensure_username
+: # no-op
 
 # 2) Check if root has a usable password; if not, offer to set it now.
 #    Root is considered unset/locked if the shadow field is empty or starts with '!' or '*'.
