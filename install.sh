@@ -282,7 +282,7 @@ else
   if [ $NONINTERACTIVE -eq 1 ]; then
     echo -e "Non-interactive: proceeding with automatic creation."
   else
-    if prompt_yes_no "Proceed with creating '$userName' on switch?" Y; then
+    if prompt_yes_no "Proceed with creating '$userName' on switch?" N; then
       :
     else
       print_error "Aborting at user confirmation."
