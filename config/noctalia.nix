@@ -1,17 +1,23 @@
-{
-  pkgs,
-  inputs,
-  lib,
-  ...
-}: let
-  noctaliaPath = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
+{ config, pkgs, inputs, lib, ... }:
+let
+  home = config.home.homeDirectory;
+  system = pkgs.stdenv.hostPlatform.system;
+  noctaliaPath = inputs.noctalia.packages.${system}.default;
   configDir = "${noctaliaPath}/share/noctalia-shell";
 in {
-  # Ensure QuickShell is available to run `qs -c noctalia-shell`.
-  home.packages = [ pkgs.quickshell ];
+  # Import the official Noctalia Home Manager module.
+  # This provides `programs.noctalia-shell` and the user systemd service
+  # that manages a writable GUI-driven config.
+  imports = [ inputs.noctalia.homeModules.default ];
 
-  # Seed Noctalia config once into ~/.config/quickshell/noctalia-shell, then leave it writable
-  home.activation.seedNoctaliaConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  # Make the Noctalia package available for this user (CLI, assets, etc.).
+  home.packages = [
+    noctaliaPath
+  ];
+
+  # Seed the Noctalia QuickShell shell code into ~/.config/quickshell/noctalia-shell
+  # once, then leave it writable for GUI-driven edits.
+  home.activation.seedNoctaliaShellCode = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     set -eu
     DEST="$HOME/.config/quickshell/noctalia-shell"
     SRC="${configDir}"
@@ -20,23 +26,44 @@ in {
       mkdir -p "$HOME/.config/quickshell"
       cp -R "$SRC" "$DEST"
       chmod -R u+rwX "$DEST"
-
-      # Try to enable dock exclusive zone and theme-by-wallpaper in common formats
-      # 1) JSON: set any "exclusive": false to true
-      find "$DEST" -type f -name '*.json' -print0 | while IFS= read -r -d $'\0' f; do
-        sed -i 's/\("exclusive"[[:space:]]*:[[:space:]]*\)false/\1true/g' "$f" || true
-        sed -i 's/\("themeByWallpaper"[[:space:]]*:[[:space:]]*\)false/\1true/g' "$f" || true
-        # Set wallpaperDir if present
-        sed -i 's#\("wallpaperDir"[[:space:]]*:[[:space:]]*\)"[^"]*"#\1"'"$HOME"'/Pictures/Wallpapers"#g' "$f" || true
-      done
-
-      # 2) YAML/YML: set any exclusive: false to true, themeByWallpaper: false to true
-      find "$DEST" -type f \( -name '*.yaml' -o -name '*.yml' \) -print0 | while IFS= read -r -d $'\0' f; do
-        sed -i 's/\(exclusive[[:space:]]*:[[:space:]]*\)false/\1true/g' "$f" || true
-        sed -i 's/\(themeByWallpaper[[:space:]]*:[[:space:]]*\)false/\1true/g' "$f" || true
-        # naive wallpaperDir replacement if key exists
-        sed -i 's#\(wallpaperDir[[:space:]]*:[[:space:]]*\).*#\1"'"$HOME"'/Pictures/Wallpapers"#g' "$f" || true
-      done
     fi
   '';
+
+  programs.noctalia-shell = {
+    enable = true;
+
+    # Run Noctalia via a per-user systemd service instead of manually
+    # seeding QuickShell config. This keeps the on-disk config writable
+    # by the GUI while still letting us provide better defaults via Nix.
+    systemd.enable = true;
+
+    # Provide sane, user-relative defaults while keeping the config
+    # writable by the GUI. These are *defaults*, not a full lock-down
+    # of the config schema.
+    settings = {
+      # Use a generic terminal for app launcher (can be changed in GUI).
+      appLauncher.terminalCommand = "xterm -e";
+
+      # Dock behavior: enabled by default and overlapping windows instead of
+      # reserving an exclusive zone.
+      dock = {
+        enabled = true;
+        displayMode = "overlap";
+      };
+
+      # Paths that previously hard-coded /home/dwilliams are now derived
+      # from the current user's home directory.
+      general.avatarImage = "${home}/Pictures/ddubsos-mtn-purple-small.jpg";
+
+      screenRecorder.directory = "${home}/Videos";
+
+      wallpaper = {
+        directory = "${home}/Pictures/Wallpapers";
+        defaultWallpaper = "${home}/.config/quickshell/noctalia-shell/Assets/Wallpaper/noctalia.png";
+
+        # We intentionally do *not* set per-monitor wallpaper entries here,
+        # since those are highly machine-specific and better handled via the GUI.
+      };
+    };
+  };
 }
