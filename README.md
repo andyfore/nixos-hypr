@@ -8,10 +8,11 @@ with a few additions:
 - Home Manager wiring for user-level config
 - Added Noctalia-shell
 
-### Upstream inspiration
+### Inspiration
 
 - Video: [`tony,btw` — Hyprland on NixOS](https://www.youtube.com/watch?v=7QLhCgDMqgw&t=138s)
 - Config: [tony,btw GitHub](https://github.com/tonybanters)
+- GUI: [Noctalia-shell](https://github.com/noctalia-dev/noctalia-shell)
 
 > Default target is **a single host**, often running in a VM.
 >
@@ -21,11 +22,11 @@ with a few additions:
 
 ### Important:
 
-> Note: Currently the first-time you login `noctalia` doesn't start
-> Logout `SUPER+SHIFT+Q` then back in. It will start normally after that
+> Note: Currently the first-time you login `noctalia-shell` doesn't start
+> Logout: `SUPER+SHIFT+Q` then back in. It will start normally after that
 > I am working to resolve this issue
 
-## Features
+## Features:
 
 ### Hyprland
 
@@ -35,7 +36,7 @@ with a few additions:
 - Noctalia shell
 - Simple waybar as alternative
 - NeoVIM configured by `nixvim`
-- Tony,BTWs TMUX configuration
+- Tony,BTW's TMUX configuration
 
 **Noctalia Shell**
 
@@ -49,7 +50,7 @@ with a few additions:
 
 ![Waybar htop](config/images/ScreenShot-htop-waybar.png)
 
-## Installation
+## Installation:
 
 ### Quick install (script)
 
@@ -99,9 +100,10 @@ Drivers are now modular, inspired by `ddubsos/modules/drivers`:
 - `vm.guest-services.enable = true;` — QEMU/Spice guest services (moved out of `services` in `configuration.nix`)
 
 This project assumes **a single host**; there is no `specialArgs.host` logic or
-per-host branching like in ddubsOS. Toggle only the one driver you actually need.
+per-host branching like in [ddubsOS](https://gitlab.com/dwilliam62/ddubsos).
+Toggle only the one driver you actually need.
 
-## Nix configuration files
+## Nix configuration files:
 
 Below you can expand each Nix file to view its full contents.
 
@@ -464,7 +466,7 @@ Default keybinds from <code>config/hypr/hyprland.conf</code> (with <code>$mainMo
 | SUPER + mouse:272 (drag left)  | movewindow                                 | Drag to move window                                      |
 | SUPER + mouse:273 (drag right) | resizewindow                               | Drag to resize window                                    |
 
-## Repository layout
+## Repository layout:
 
 Annotated overview of the main files and directories in this flake:
 
