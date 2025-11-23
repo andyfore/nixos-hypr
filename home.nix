@@ -19,6 +19,60 @@
       (pkgs.writeShellScriptBin "rofi-legacy.menu" ''
         rofi -config ~/.config/rofi/legacy.config.rasi -show drun
       '')
+      (pkgs.writeShellScriptBin "config-menu" ''
+        #!/usr/bin/env bash
+        set -euo pipefail
+
+        EDITOR_BIN="${EDITOR:-nvim}"
+        TERM_BIN="${TERMINAL:-}"
+
+        pick_term() {
+          if [ -n "${TERM_BIN}" ] && command -v "$TERM_BIN" >/dev/null 2>&1; then
+            echo "$TERM_BIN"; return
+          fi
+          for t in kitty foot alacritty gnome-terminal konsole xterm; do
+            if command -v "$t" >/dev/null 2>&1; then echo "$t"; return; fi
+          done
+          echo ""
+        }
+
+        repo="$HOME/Projects/ddubs/hyprland-btw"
+
+        declare -A files=(
+          ["flake.nix"]="$repo/flake.nix"
+          ["home.nix"]="$repo/home.nix"
+          ["configuration.nix"]="$repo/configuration.nix"
+          ["hardware-configuration.nix"]="$repo/hardware-configuration.nix"
+          ["config/hypr/hyprland.conf"]="$repo/config/hypr/hyprland.conf"
+          ["config/hypr/binds.conf"]="$repo/config/hypr/binds.conf"
+          ["config/hypr/env.conf"]="$repo/config/hypr/env.conf"
+          ["config/hypr/startup.conf"]="$repo/config/hypr/startup.conf"
+          ["config/hypr/WindowRules.conf"]="$repo/config/hypr/WindowRules.conf"
+          ["config/hypr/appearance.conf"]="$repo/config/hypr/appearance.conf"
+          ["config/hypr/hyprpaper.conf"]="$repo/config/hypr/hyprpaper.conf"
+          ["config/packages.nix"]="$repo/config/packages.nix"
+          ["config/fonts.nix"]="$repo/config/fonts.nix"
+          ["config/.zshrc-personal"]="$repo/config/.zshrc-personal"
+          ["config/.bashrc-personal"]="$repo/config/.bashrc-personal"
+          ["config/kitty/kitty.conf"]="$repo/config/kitty/kitty.conf"
+        )
+
+        choice="$(printf '%s\n' "${!files[@]}" | sort | rofi -dmenu -i -config "$HOME/.config/rofi/config-menu.rasi" -p ' Edit Config')"
+        [ -z "${choice}" ] && exit 0
+        target="${files[$choice]}"
+
+        mkdir -p "$(dirname "$target")"
+        if [ ! -e "$target" ]; then
+          : > "$target"
+        fi
+
+        term="$(pick_term)"
+        if [ -n "$term" ] && [[ "$EDITOR_BIN" =~ ^(nvim|vim|vi|nano|helix|hx)$ ]]; then
+          exec "$term" -e "$EDITOR_BIN" "$target"
+        else
+          "$EDITOR_BIN" "$target" >/dev/null 2>&1 & disown
+        fi
+      '')
     ];
   };
 
@@ -119,4 +173,5 @@
   home.file.".config/starship.toml".source = ./config/starship.toml;
   home.file.".config/rofi/legacy.config.rasi".source = ./config/rofi/legacy.config.rasi;
   home.file.".config/rofi/legacy-rofi.jpg".source = ./config/rofi/legacy-rofi.jpg;
+  home.file.".config/rofi/config-menu.rasi".source = ./config/rofi/config-menu.rasi;
 }
