@@ -66,19 +66,16 @@
         )
 
         # Build display list and mapping, only for existing files
-        display_list=""
         for entry in "''${files_data[@]}"; do
-          display="''${entry%%:*}"
-          path="''${entry##*:}"
+          display=$(echo "$entry" | cut -d: -f1)
+          path=$(echo "$entry" | cut -d: -f2-)
           if [ -f "$path" ]; then
             echo "$display|$path" >> "$tmpmap"
-            display_list="''${display_list}$display
-"
           fi
         done
 
-        # Show rofi menu
-        choice=$(echo -n "$display_list" | sort | rofi -dmenu -i -config "$HOME/.config/rofi/config-menu.rasi" -p ' Edit Config')
+        # Show rofi menu with sorted display names only
+        choice=$(cut -d'|' -f1 "$tmpmap" | sort | rofi -dmenu -i -config "$HOME/.config/rofi/config-menu.rasi" -p ' Edit Config')
         [ -z "$choice" ] && exit 0
 
         # Look up path from mapping
