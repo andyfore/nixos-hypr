@@ -15,6 +15,11 @@
     sessionVariables = {
       GTK_THEME = "Adwaita:dark";
     };
+    packages = [
+      (pkgs.writeShellScriptBin "rofi-legacy.menu" ''
+        rofi -config ~/.config/rofi/legacy.config.rasi -show drun
+      '')
+    ];
   };
 
   programs = {
@@ -112,4 +117,5 @@
   home.file.".zshrc-personal".source = ./config/.zshrc-personal;
   home.file.".config/tmux/tmux.conf".source = ./config/tmux.conf;
   home.file.".config/starship.toml".source = ./config/starship.toml;
+  home.file.".config/rofi/legacy.config.rasi".source = ./config/rofi/legacy.config.rasi;
 }
