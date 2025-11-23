@@ -23,11 +23,11 @@
         #!/usr/bin/env bash
         set -euo pipefail
 
-        EDITOR_BIN="${EDITOR:-nvim}"
-        TERM_BIN="${TERMINAL:-}"
+        EDITOR_BIN="''${EDITOR:-nvim}"
+        TERM_BIN="''${TERMINAL:-}"
 
         pick_term() {
-          if [ -n "${TERM_BIN}" ] && command -v "$TERM_BIN" >/dev/null 2>&1; then
+          if [ -n "''${TERM_BIN}" ] && command -v "$TERM_BIN" >/dev/null 2>&1; then
             echo "$TERM_BIN"; return
           fi
           for t in kitty foot alacritty gnome-terminal konsole xterm; do
@@ -57,9 +57,9 @@
           ["config/kitty/kitty.conf"]="$repo/config/kitty/kitty.conf"
         )
 
-        choice="$(printf '%s\n' "${!files[@]}" | sort | rofi -dmenu -i -config "$HOME/.config/rofi/config-menu.rasi" -p ' Edit Config')"
-        [ -z "${choice}" ] && exit 0
-        target="${files[$choice]}"
+        choice="$(printf '%s\n' "''${!files[@]}" | sort | rofi -dmenu -i -config "$HOME/.config/rofi/config-menu.rasi" -p ' Edit Config')"
+        [ -z "''${choice}" ] && exit 0
+        target="''${files[$choice]}"
 
         mkdir -p "$(dirname "$target")"
         if [ ! -e "$target" ]; then
