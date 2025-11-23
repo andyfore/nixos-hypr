@@ -190,10 +190,10 @@
 
   # Dedicated kitty config that layers background image settings on top of the main config
   # Keep standard kitty.conf as-is; kitty-bg.conf only adds/overrides background-related options.
-  home.file.".config/kitty/kitty-bg.conf".text = lib.mkForce ''
+  home.file.".config/kitty/kitty-bg.conf".text = ''
     include ./kitty.conf
     # Background image managed by wrapper via symlink
-    background_image  ${config.home.homeDirectory}/Pictures/current_image
+    background_image  ~/Pictures/current_image
     background_image_layout scaled
     background_tint 0.95
     background_opacity 1.0
