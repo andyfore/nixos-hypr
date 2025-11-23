@@ -6,6 +6,8 @@
     ./config/noctalia.nix # Noctalia QuickShell wiring (fronm ddubsos)
     ./config/vscode.nix
     ./config/ghostty.nix
+    ./config/wezterm.nix
+    ./config/alacritty.nix
     ./config/zsh.nix
     ./config/yazi/default.nix
   ];
