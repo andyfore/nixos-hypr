@@ -468,48 +468,117 @@ Default keybinds from <code>config/hypr/hyprland.conf</code> (with <code>$mainMo
 
 ## Repository layout:
 
-Annotated overview of the main files and directories in this flake:
 
 ```text path=null start=null
-hyprland-btw/
-├── flake.nix                     # Flake entrypoint; defines inputs and hyprland-btw system
-├── configuration.nix             # Top-level NixOS system configuration
-├── hardware-configuration.nix    # Hardware/disk layout for this machine (auto-generated)
-├── home.nix                      # Home Manager configuration for user your-username
-├── LICENSE                       # Project license
-├── README.md                     # Project overview and documentation
-└── config/                       # User-level and modular configuration
-    ├── packages.nix              # System packages module (environment.systemPackages)
-    ├── fonts.nix                 # Fonts and Nerd Fonts configuration
-    ├── nixvim.nix                # Nixvim module (Neovim configuration via Nix)
-    ├── noctalia.nix              # Noctalia shell / QuickShell integration
-    ├── zsh.nix                   # Zsh-related Home Manager configuration
-    ├── vscode.nix                # VS Code / editor-related configuration
-    ├── .bashrc-personal          # Extra interactive shell configuration (copied to $HOME)
-    ├── tmux.conf                 # Tmux configuration (copied to ~/.config/tmux/tmux.conf)
-    ├── starship.toml             # Starship prompt configuration
-    ├── fastfetch/                # Fastfetch configuration and logo
-    │   ├── config.jsonc          # Fastfetch output configuration
-    │   └── nixos.png             # Logo used by fastfetch
-    ├── foot/                     # Foot terminal configuration
-    │   └── foot.ini              # Foot terminal settings
-    ├── hypr/                     # Hyprland and Hyprpaper configuration
-    │   ├── hyprland.conf         # Hyprland compositor config and keybinds
-    │   └── hyprpaper.conf        # Wallpaper configuration
-    ├── waybar/                   # Waybar status bar configuration
-    │   ├── config.jsonc          # Waybar modules and layout
-    │   └── style.css             # Waybar styling
-    ├── kitty/                    # Kitty terminal configuration
-    │   └── kitty.conf            # Kitty settings, fonts, and keybinds
-    ├── yazi/                     # Yazi file manager configuration
-    │   ├── default.nix           # Nix module wiring Yazi into Home Manager/config
-    │   ├── keymap.nix            # Yazi keybindings
-    │   ├── theme.nix             # Yazi theme as Nix
-    │   ├── theme.toml            # Yazi theme in TOML format
-    │   └── yazi.nix              # Additional Yazi configuration (entrypoint)
-    └── images/                   # Screenshots used in the README
-        ├── ScreenShot-Noctalia.png
-        ├── ScreenShot-htop-noctalia.png
-        ├── ScreenShot-htop-waybar.png
-        └── ScreenShot-waybar.png
+├── CHANGELOG.md
+├── config
+│   ├── fastfetch
+│   │   ├── config.jsonc
+│   │   └── nixos.png
+│   ├── fonts.nix
+│   ├── foot
+│   │   └── foot.ini
+│   ├── hypr
+│   │   ├── animations
+│   │   │   ├── 00-default.conf
+│   │   │   ├── 01-default-v2.conf
+│   │   │   ├── 03-Disable-Animation.conf
+│   │   │   ├── END-4.conf
+│   │   │   ├── HYDE-default.conf
+│   │   │   ├── HYDE-minimal-1.conf
+│   │   │   ├── HYDE-minimal-2.conf
+│   │   │   ├── HYDE-optimized.conf
+│   │   │   ├── HYDE-Vertical.conf
+│   │   │   ├── hyprland-default.conf
+│   │   │   ├── Mahaveer-me-1.conf
+│   │   │   ├── Mahaveer-me-2.conf
+│   │   │   ├── ML4W-classic.conf
+│   │   │   ├── ML4W-dynamic.conf
+│   │   │   ├── ML4W-fast.conf
+│   │   │   ├── ML4W-high.conf
+│   │   │   ├── ML4W-moving.conf
+│   │   │   └── ML4W]-standard.conf
+│   │   ├── appearance.conf
+│   │   ├── binds.conf
+│   │   ├── env.conf
+│   │   ├── hyprland.conf
+│   │   ├── hyprpaper.conf
+│   │   ├── input.conf
+│   │   ├── startup.conf
+│   │   └── WindowRules.conf
+│   ├── images
+│   │   ├── ScreenShot-htop-noctalia.png
+│   │   ├── ScreenShot-htop-waybar.png
+│   │   ├── ScreenShot-Noctalia.png
+│   │   └── ScreenShot-waybar.png
+│   ├── kitty
+│   │   └── kitty.conf
+│   ├── nixvim.nix
+│   ├── noctalia.nix
+│   ├── packages.nix
+│   ├── starship.toml
+│   ├── tmux.conf
+│   ├── vscode.nix
+│   ├── wallpapers
+│   │   ├── 3d-door.jpg
+│   │   ├── a_group_of_wooden_posts_in_water.jpg
+│   │   ├── alena-aenami-cloud-sunset.jpg
+│   │   ├── alena-aenami-cold.jpg
+│   │   ├── alena-aenami-endless.jpg
+│   │   ├── alena-aenami-far-from-tomorrow.jpg
+│   │   ├── Anime-Lake.png
+│   │   ├── Anime-Lanscape.png
+│   │   ├── Anime-Purple-eyes.png
+│   │   ├── astralbed.png
+│   │   ├── beach-ocean-waves-sunset-clouds-scenery-2k-wallpaper.jpg
+│   │   ├── bluehour.jpg
+│   │   ├── CloudRipple.jpg
+│   │   ├── cosmic_blue.jpg
+│   │   ├── CuteCat.png
+│   │   ├── cyber.jpg
+│   │   ├── DT-Mountain-Lake.jpg
+│   │   ├── flowers-1.jpg
+│   │   ├── Hot-Blue-911.jpg
+│   │   ├── lake-dock-fog.jpg
+│   │   ├── Lofi-Cafe.jpg
+│   │   ├── lofi-Urban-Nightscape.png
+│   │   ├── midnight-reflections-moonlit-sea.jpg
+│   │   ├── Mily-Way-over-Horse-Head-Rock-New-South-Wales-fog.jpg
+│   │   ├── moonlight.jpg
+│   │   ├── nordwall3.jpg
+│   │   ├── Pastel-lake-boat-on-shore.png
+│   │   ├── purple_gasstation_abstract_dark_night.jpg
+│   │   ├── Purple-Nightmare.jpg
+│   │   ├── River-Moutains-Cherry-Blosums.png
+│   │   ├── Seaside-wharf-at-night.avif
+│   │   ├── sunrise-horse-head-rock-bermagui-new-south-wales-australia-end-world-172241321.webp
+│   │   └── Water-flowing-over-rock.png
+│   ├── waybar
+│   │   ├── config.jsonc
+│   │   └── style.css
+│   ├── yazi
+│   │   ├── default.nix
+│   │   ├── keymap.nix
+│   │   ├── theme.nix
+│   │   ├── theme.toml
+│   │   └── yazi.nix
+│   └── zsh.nix
+├── configuration.nix
+├── flake.lock
+├── flake.nix
+├── hardware-configuration.nix
+├── home.nix
+├── install.sh
+├── LICENSE
+├── modules
+│   └── drivers
+│       ├── amd-drivers.nix
+│       ├── default.nix
+│       ├── intel-drivers.nix
+│       ├── nvidia-drivers.nix
+│       └── vm-guest-services.nix
+├── README.md
+├── tree.txt
+└── WARP.md
+
 ```
