@@ -264,6 +264,21 @@
               --override "background_opacity=1.0"
             )
 
+            # Create desktop file for kitty-bg
+            DESKTOP_DIR="$HOME/.local/share/applications"
+            DESKTOP_FILE="$DESKTOP_DIR/kitty-bg.desktop"
+            mkdir -p "$DESKTOP_DIR"
+            cat > "$DESKTOP_FILE" << 'DESKTOP'
+[Desktop Entry]
+Type=Application
+Name=Kitty with Random Wallpaper
+Comment=Launch Kitty terminal with a random wallpaper
+Exec=kitty-bg
+Icon=utilities-terminal
+Terminal=false
+Categories=System;Utility;TerminalEmulator;
+DESKTOP
+
             # Launch kitty (background by default) with background image overrides
             if (( LAUNCH )); then
               if (( FOREGROUND )); then
