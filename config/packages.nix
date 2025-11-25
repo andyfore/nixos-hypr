@@ -26,6 +26,8 @@
     wofi
     waybar
     matugen
+    wl-clipboard
+
 
     # Add your packages here
     atop
@@ -53,6 +55,7 @@
     bibata-cursors
     lunarvim # Alternate neovim (lvim)
     luarocks # LUA for nevoim
+    mdcat
     mesa-demos # needed for inxi
     ncdu
     nh # Nix Helper

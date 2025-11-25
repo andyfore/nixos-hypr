@@ -6,6 +6,18 @@
 
 ## Inspired by: Tony,btw YouTube Video. (See README.md)
 
+#### Hyprland-btw v0.2.7
+
+- Updated flake
+- Moved termainls NIX files to own subdir `config/terminals`
+- Moved Editors/IDE NIX files to own subdir `config/editors`
+- Added `nvf.nix` Alternate NeoVIM configurator.
+  - It's commented out in `home.nix`
+- Added:
+  - `dino` and `gajim` Jappber/XMPP clients
+  - `wl-copy`, `wl-paste`
+  - Added `code-runner` plugin to `vscode.nix`
+
 #### Hyprland-btw v0.2.6
 
 - Added `keybinds` rofi search menu
