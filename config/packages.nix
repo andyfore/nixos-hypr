@@ -25,6 +25,7 @@
     matugen
     wl-clipboard
     kdePackages.qtmultimedia # needed for overview feature
+    libsForQt5.qt5.qtmultimedia # needed for overview feature
 
     # Add your packages here
     atop
