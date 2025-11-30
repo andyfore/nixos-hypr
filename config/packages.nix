@@ -30,8 +30,6 @@
     qt6.qtwayland
     qt6.qt5compat
     qt6.qtmultimedia
-    # Keep Qt5 compat for old modules if needed
-    libsForQt5.qt5compat
 
     # Add your packages here
     atop
