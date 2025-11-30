@@ -24,9 +24,15 @@
     waybar
     matugen
     wl-clipboard
-    kdePackages.qtmultimedia # needed for overview feature
-    libsForQt5.qt5.qtmultimedia # needed for overview feature
-    libsForQt5.qt5.qtgraphicaleffects # needed for overview feature
+    # Qt6 dependencies for quickshell-overview
+    qt6.qtbase
+    qt6.qtdeclarative
+    qt6.qtwayland
+    qt6.qt5compat
+    qt6.qtmultimedia
+    qt6.qtgraphicaleffects
+    # Keep Qt5 compat for old modules if needed
+    libsForQt5.qt5compat
 
     # Add your packages here
     atop

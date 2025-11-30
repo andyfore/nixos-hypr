@@ -1,4 +1,4 @@
-import Qt5Compat.GraphicalEffects
+import QtQuick.Effects
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
